@@ -37,3 +37,22 @@ def test_calc_log_returns_removes_first_row():
 
     assert len(result) == 2
     assert result.index.tolist() == [1, 2]
+
+
+
+def test_calc_log_returns_preserves_columns():
+    """The transformation should preserve the asset columns."""
+
+    prices = pd.DataFrame({
+        "AAPL": [100, 110, 120],
+        "MSFT": [200, 210, 220],
+        "BTC-USD": [1000, 1050, 1100]
+    })
+
+    result = calc_log_returns(prices)
+
+    assert list(result.columns) == [
+        "AAPL",
+        "MSFT",
+        "BTC-USD",
+    ]
