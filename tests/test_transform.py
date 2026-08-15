@@ -10,7 +10,7 @@ def test_calc_log_returns():
 
     prices = pd.DataFrame({
         "AAPL": [100, 110, 121],
-        "BTC-USD": [1000, 1100, 1210],
+        "BTC-USD": [1000, 1100, 1210]
     })
 
     result = calc_log_returns(prices)
@@ -26,51 +26,14 @@ def test_calc_log_returns():
     assert np.isclose(result.iloc[1]["BTC-USD"], expected_return)
 
 
+def test_calc_log_returns_removes_first_row():
+    """The first row should be removed because it has no previous price."""
 
+    prices = pd.DataFrame({
+        "AAPL": [100, 110, 120]
+    })
 
+    result = calc_log_returns(prices)
 
-
-
-# from data_loader import fetch_data
-
-
-# def calc_log_returns(prices):
-#     """
-#     Receives the historical close data and transforms it to log returns
-
-#     Parameter:
-#     prices (DataFrame): The historical close price data with their corresponding market sectors
-
-#     Returns:
-#     log_returns (DataFrame): The log returns of the price data after removing any missing rows
-#     """
-
-#     log_returns = np.log(prices/prices.shift(1)).dropna()
-
-#     return log_returns
-
-
-# if __name__ == "__main__":
-
-
-#     # Define asset universe across 5 distinct economic classes
-#     ASSET_UNIVERSE = {
-#         'BTC-USD': 'Crypto', 
-#         'ETH-USD': 'Crypto', 
-#         'SOL-USD': 'Crypto',
-#         'AAPL': 'Tech', 
-#         'MSFT': 'Tech',
-#         'JPM': 'Finance', 
-#         'BAC': 'Finance',
-#         'XOM': 'Energy', 
-#         'CVX': 'Energy',
-#         'WMT': 'Retail'
-#         }
-
-
-#     print()
-#     # data = fetch_data(ASSET_UNIVERSE, "6mo")
-#     # transformed_data = calc_log_returns(data)
-#     # print(transformed_data)
-
-#     test_calculate_log_returns()
+    assert len(result) == 2
+    assert result.index.tolist() == [1, 2]
