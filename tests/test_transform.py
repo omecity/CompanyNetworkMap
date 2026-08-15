@@ -56,3 +56,15 @@ def test_calc_log_returns_preserves_columns():
         "MSFT",
         "BTC-USD",
     ]
+
+
+def test_calc_log_returns_handles_missing_values():
+    """Missing price observations should not produce unexpected errors."""
+
+    prices = pd.DataFrame({
+        "AAPL": [100, 110, np.nan, 130]
+    })
+
+    result = calc_log_returns(prices)
+
+    assert isinstance(result, pd.DataFrame)
